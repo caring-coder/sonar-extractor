@@ -4,7 +4,7 @@ import requests
 
 from sonar import Project, Paging, Portfolio
 
-
+# Add a really important comment here
 class Sonar(object):
     def __init__(self, url: str, auth=None):
         self.auth = auth
@@ -32,6 +32,12 @@ class Sonar(object):
                 yield Portfolio.from_dict(component)
 
     def views_raw(self, page: int):
+        params = dict(qualifier="VW", p=page)
+        url = "{}/api/components/search".format(self.root)
+        response = requests.get(url, auth=self.auth, verify=False, params=params)
+        return response.json()
+
+    def projects_raw(self, page: int):
         params = dict(qualifier="VW", p=page)
         url = "{}/api/components/search".format(self.root)
         response = requests.get(url, auth=self.auth, verify=False, params=params)
